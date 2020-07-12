@@ -1,35 +1,9 @@
-const path = require("path");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const { merge } = require("webpack-merge");
 
-module.exports = {
-  context: path.resolve(__dirname),
-  entry: "./index.js",
-  output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, "dist"),
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
-      },
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: "html-loader",
-          },
-        ],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebPackPlugin({
-      template: "./index.html",
-    }),
-  ],
+const loadPresets = require("./build/load_presets");
+const commonConfig = require("./build/webpack.common");
+const modeConfig = (env) => require(`./build/webpack.${env.mode}`)(env);
+
+module.exports = (env = { mode: "development", presets: [] }) => {
+  return merge(commonConfig(env), modeConfig(env), loadPresets(env));
 };

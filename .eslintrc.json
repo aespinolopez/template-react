@@ -7,6 +7,7 @@
     "prettier",
     "prettier/react"
   ],
+  "ignorePatterns": ["webpack.*", "/build/"],
   "rules": {
     "react/jsx-filename-extension": 0,
     "no-use-before-define": ["error", {"functions":  false}]
